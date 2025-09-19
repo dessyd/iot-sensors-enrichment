@@ -23,9 +23,7 @@ router = APIRouter(prefix="/devices", tags=["devices"])
 
 
 @router.get("", response_model=List[str])
-def list_devices(
-    session: Session = Depends(get_session), _=Depends(get_current_user)
-):
+def list_devices(session: Session = Depends(get_session), _=Depends(get_current_user)):
     return crud.list_devices(session)
 
 
@@ -38,9 +36,7 @@ def export_csv(
     devices = session.exec(select(Device)).all()
     output = StringIO()
     writer = csv.writer(output)
-    writer.writerow(
-        ["device_id", "name", "location", "model", "metadata_json"]
-    )
+    writer.writerow(["device_id", "name", "location", "model", "metadata_json"])
     for d in devices:
         writer.writerow(
             [

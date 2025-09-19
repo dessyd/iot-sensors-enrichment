@@ -29,9 +29,7 @@ def create_user(
 
 
 @router.get("", response_model=List[UserRead])
-def list_users(
-    session: Session = Depends(get_session), _=Depends(require_admin)
-):
+def list_users(session: Session = Depends(get_session), _=Depends(require_admin)):
     return crud.list_users(session)
 
 

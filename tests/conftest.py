@@ -52,8 +52,6 @@ def client(engine, session, monkeypatch):
 @pytest.fixture()
 def admin_token(client):
     admin_pw = os.environ.get("ADMIN_PASSWORD", "testadmin")
-    r = client.post(
-        "/auth/token", data={"username": "admin", "password": admin_pw}
-    )
+    r = client.post("/auth/token", data={"username": "admin", "password": admin_pw})
     assert r.status_code == 200
     return r.json()["access_token"]
