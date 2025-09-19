@@ -41,6 +41,7 @@ def delete_device(session, device: Device) -> None:
 
 # Users
 
+
 def get_user_by_username(session, username: str) -> Optional[User]:
     statement = select(User).where(User.username == username)
     return session.exec(statement).first()

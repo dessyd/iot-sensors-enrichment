@@ -1,4 +1,12 @@
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Query, Response
+from fastapi import (
+    APIRouter,
+    Depends,
+    HTTPException,
+    UploadFile,
+    File,
+    Query,
+    Response,
+)
 from typing import List
 from sqlmodel import Session, select
 import csv
@@ -15,18 +23,24 @@ router = APIRouter(prefix="/devices", tags=["devices"])
 
 
 @router.get("", response_model=List[str])
-def list_devices(session: Session = Depends(get_session),
-                 _=Depends(get_current_user)):
+def list_devices(
+    session: Session = Depends(get_session), _=Depends(get_current_user)
+):
     return crud.list_devices(session)
 
 
 @router.get("/csv")
-def export_csv(path: str | None = Query(None), session: Session = Depends(get_session),
-               _=Depends(get_current_user)):
+def export_csv(
+    path: str | None = Query(None),
+    session: Session = Depends(get_session),
+    _=Depends(get_current_user),
+):
     devices = session.exec(select(Device)).all()
     output = StringIO()
     writer = csv.writer(output)
-    writer.writerow(["device_id", "name", "location", "model", "metadata_json"])
+    writer.writerow(
+        ["device_id", "name", "location", "model", "metadata_json"]
+    )
     for d in devices:
         writer.writerow(
             [
@@ -47,8 +61,11 @@ def export_csv(path: str | None = Query(None), session: Session = Depends(get_se
 
 
 @router.get("/{device_id}", response_model=DeviceRead)
-def get_device(device_id: str, session: Session = Depends(get_session),
-               _=Depends(get_current_user)):
+def get_device(
+    device_id: str,
+    session: Session = Depends(get_session),
+    _=Depends(get_current_user),
+):
     device = crud.get_device_by_device_id(session, device_id)
     if not device:
         raise HTTPException(status_code=404, detail="Device not found")
@@ -56,8 +73,11 @@ def get_device(device_id: str, session: Session = Depends(get_session),
 
 
 @router.post("", response_model=DeviceRead, status_code=201)
-def create_device(payload: DeviceCreate, session: Session = Depends(get_session),
-                  _=Depends(get_current_user)):
+def create_device(
+    payload: DeviceCreate,
+    session: Session = Depends(get_session),
+    _=Depends(get_current_user),
+):
     existing = crud.get_device_by_device_id(session, payload.device_id)
     if existing:
         raise HTTPException(status_code=409, detail="Device already exists")
@@ -67,8 +87,12 @@ def create_device(payload: DeviceCreate, session: Session = Depends(get_session)
 
 
 @router.put("/{device_id}", response_model=DeviceRead)
-def update_device(device_id: str, payload: DeviceCreate, session: Session = Depends(get_session),
-                  _=Depends(get_current_user)):
+def update_device(
+    device_id: str,
+    payload: DeviceCreate,
+    session: Session = Depends(get_session),
+    _=Depends(get_current_user),
+):
     device = crud.get_device_by_device_id(session, device_id)
     if not device:
         raise HTTPException(status_code=404, detail="Device not found")
@@ -77,8 +101,11 @@ def update_device(device_id: str, payload: DeviceCreate, session: Session = Depe
 
 
 @router.delete("/{device_id}", status_code=204)
-def delete_device(device_id: str, session: Session = Depends(get_session),
-                  _=Depends(get_current_user)):
+def delete_device(
+    device_id: str,
+    session: Session = Depends(get_session),
+    _=Depends(get_current_user),
+):
     device = crud.get_device_by_device_id(session, device_id)
     if not device:
         raise HTTPException(status_code=404, detail="Device not found")
@@ -87,8 +114,11 @@ def delete_device(device_id: str, session: Session = Depends(get_session),
 
 
 @router.post("/csv", status_code=201)
-def import_csv(file: UploadFile = File(...), session: Session = Depends(get_session),
-               _=Depends(get_current_user)):
+def import_csv(
+    file: UploadFile = File(...),
+    session: Session = Depends(get_session),
+    _=Depends(get_current_user),
+):
     # some clients may omit content_type; accept common CSV types and empty
     if file.content_type and file.content_type not in (
         "text/csv",

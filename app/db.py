@@ -45,5 +45,9 @@ def init_admin_user(admin_password: str | None = None) -> None:
         existing = get_user_by_username(session, "admin")
         if existing:
             return
-        user = User(username="admin", hashed_password=get_password_hash(admin_password), is_admin=True)
+        user = User(
+            username="admin",
+            hashed_password=get_password_hash(admin_password),
+            is_admin=True,
+        )
         create_user(session, user)

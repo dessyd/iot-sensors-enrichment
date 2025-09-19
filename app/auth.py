@@ -31,7 +31,9 @@ def get_password_hash(password: str) -> str:
     return PWD_CONTEXT.hash(password)
 
 
-def create_access_token(*, data: dict, expires_delta: Optional[timedelta] = None) -> str:
+def create_access_token(
+    *, data: dict, expires_delta: Optional[timedelta] = None
+) -> str:
     """Create a signed JWT access token containing "sub" and "exp"."""
     to_encode = data.copy()
     now = datetime.now(timezone.utc)
@@ -42,7 +44,8 @@ def create_access_token(*, data: dict, expires_delta: Optional[timedelta] = None
 
 
 async def get_current_user(
-    token: str = Depends(OAUTH2_SCHEME), session: Session = Depends(get_session)
+    token: str = Depends(OAUTH2_SCHEME),
+    session: Session = Depends(get_session),
 ) -> User:
     """Dependency that returns the currently authenticated user."""
     try:
@@ -67,10 +70,12 @@ async def get_current_user(
     return user
 
 
-async def require_admin(current_user: User = Depends(get_current_user)) -> None:
+async def require_admin(
+    current_user: User = Depends(get_current_user),
+) -> None:
     """Ensure the current user has admin privileges."""
     if not current_user.is_admin:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="Admin privileges required"
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Admin privileges required",
         )
-

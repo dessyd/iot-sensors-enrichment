@@ -34,11 +34,13 @@ def csv_to_devices(content: str) -> List[Dict[str, Any]]:
             metadata = json.loads(row.get("metadata_json") or "{}")
         except Exception:
             metadata = {}
-        results.append({
-            "device_id": row.get("device_id"),
-            "name": row.get("name"),
-            "location": row.get("location"),
-            "model": row.get("model"),
-            "metadata": metadata,
-        })
+        results.append(
+            {
+                "device_id": row.get("device_id"),
+                "name": row.get("name"),
+                "location": row.get("location"),
+                "model": row.get("model"),
+                "metadata": metadata,
+            }
+        )
     return results
