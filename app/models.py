@@ -1,6 +1,7 @@
-from typing import Optional, Dict, Any
-from sqlmodel import SQLModel, Field, Column, JSON
 from datetime import datetime
+from typing import Optional, Dict, Any
+
+from sqlmodel import Column, Field, JSON, SQLModel
 
 
 class Device(SQLModel, table=True):

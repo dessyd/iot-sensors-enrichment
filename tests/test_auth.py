@@ -1,15 +1,9 @@
-import sys
-from pathlib import Path
 from fastapi.testclient import TestClient
 
-# ensure project root in path for imports
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
-
-from main import app
+from app import app as fastapi_app
 
 
-client = TestClient(app)
+client = TestClient(fastapi_app)
 
 
 def test_token_missing_credentials() -> None:

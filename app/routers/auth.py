@@ -1,14 +1,14 @@
+# no extra stdlib imports required here
+
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
-from datetime import timedelta
+
 from sqlmodel import Session
 
-from app.db import get_session, init_db
-from app.auth import verify_password, create_access_token, get_password_hash
 from app import crud
-from app.models import User
+from app.auth import create_access_token, verify_password
+from app.db import get_session
 from app.schemas import Token
-import os
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 

@@ -1,10 +1,12 @@
-from fastapi import APIRouter, Depends, HTTPException
 from typing import List
+
+from fastapi import APIRouter, Depends, HTTPException
+
 from sqlmodel import Session
 
-from app.db import get_session, init_db
-from app.auth import get_password_hash, require_admin, get_current_user
 from app import crud
+from app.auth import get_password_hash, require_admin
+from app.db import get_session
 from app.models import User
 from app.schemas import UserCreate, UserRead
 

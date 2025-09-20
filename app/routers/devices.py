@@ -1,21 +1,23 @@
+from io import StringIO
+import csv
+import json
+from typing import List
+
 from fastapi import (
     APIRouter,
     Depends,
-    HTTPException,
-    UploadFile,
     File,
+    HTTPException,
     Query,
     Response,
+    UploadFile,
 )
-from typing import List
-from sqlmodel import Session, select
-import csv
-import json
-from io import StringIO
 
-from app.db import get_session
-from app.auth import get_current_user
+from sqlmodel import Session, select
+
 from app import crud
+from app.auth import get_current_user
+from app.db import get_session
 from app.models import Device
 from app.schemas import DeviceCreate, DeviceRead
 

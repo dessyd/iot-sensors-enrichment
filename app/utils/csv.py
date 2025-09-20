@@ -1,7 +1,8 @@
 import csv
 import json
-from typing import List, Dict, Any
 from io import StringIO
+from typing import List, Dict, Any
+
 from app.models import Device
 
 

@@ -1,3 +1,3 @@
-from . import devices, users, auth
+from . import auth, devices, users
 
-__all__ = ["devices", "users", "auth"]
+__all__ = ["auth", "devices", "users"]
