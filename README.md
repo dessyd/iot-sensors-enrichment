@@ -26,6 +26,20 @@ export JWT_SECRET="supersecret"
 export DATABASE_URL="sqlite:///./iot.db"
 ```
 
+Env & helper
+
+Pour simplifier la configuration locale, copiez le fichier d'exemple et utilisez le script fourni :
+
+```bash
+# copier l'exemple et éditer si besoin
+cp .env.example .env
+
+# ou générer un .env sécurisé (génère un JWT_SECRET fort)
+./scripts/generate_env.sh
+```
+
+Le fichier `.env` est ajouté à `.gitignore` par défaut afin d'éviter de pousser des secrets.
+
 3. Initialiser la base de données et créer l'utilisateur admin :
 
 ```python
