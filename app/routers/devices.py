@@ -79,7 +79,12 @@ def create_device(
     existing = crud.get_device_by_device_id(session, payload.device_id)
     if existing:
         raise HTTPException(status_code=409, detail="Device already exists")
-    device = Device(**payload.model_dump())
+    data = payload.model_dump()
+    # map incoming schema key 'metadata' to the Device model attribute
+    # 'metadata_'
+    if "metadata" in data:
+        data["metadata_"] = data.pop("metadata")
+    device = Device(**data)
     created = crud.create_device(session, device)
     return crud.device_to_dict(created)
 
