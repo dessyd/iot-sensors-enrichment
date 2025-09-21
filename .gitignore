@@ -32,3 +32,7 @@ htmlcov/
 # env files
 .env
 .env.bak*
+
+# Local dev artifacts
+.dev_token
+VERSION

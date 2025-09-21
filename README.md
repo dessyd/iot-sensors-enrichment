@@ -58,6 +58,27 @@ Démarrer le serveur
 uvicorn main:app --reload
 ```
 
+## Makefile: `make up`
+
+Le projet inclut une cible Make `make up` qui effectue deux opérations
+
+avant de démarrer Uvicorn :
+
+- écrit un fichier `VERSION` contenant le résultat de
+	`git describe --tags --always --dirty` (utile si tu veux injecter la
+	version dans l'environnement d'exécution),
+- génère un token JWT de développement et l'écrit dans `.dev_token`.
+
+Utilisation :
+
+```bash
+make up
+# puis ouvrir http://127.0.0.1:8000/
+```
+
+Note : le token `.dev_token` et le fichier `VERSION` sont destinés au
+développement local ; ils ne doivent pas être commités.
+
 Exemples d'appels
 
 - Obtenir un token :
@@ -100,7 +121,6 @@ Exemples
 device123,Boiler,BoilerRoom,ModelX,{"firmware":"1.2","capabilities":["temp","pressure"]}
 ```
 
-
 ## Sécurité des tokens (JWT_SECRET)
 
 La variable d'environnement `JWT_SECRET` est la clé utilisée pour signer
@@ -113,12 +133,12 @@ Bonnes pratiques
 
 - Générer une clé forte (ex : 32 octets aléatoires encodés en base64).
 - Ne pas committer `JWT_SECRET` dans le dépôt. Utiliser `.env` (ignoré par
-	git) pour le développement, et un gestionnaire de secrets en production
-	(AWS Secrets Manager, HashiCorp Vault, etc.).
+ git) pour le développement, et un gestionnaire de secrets en production
+ (AWS Secrets Manager, HashiCorp Vault, etc.).
 - Garder une durée d'expiration courte via `JWT_EXPIRATION` pour limiter la
-	fenêtre d'exploitation si une clé fuit.
+ fenêtre d'exploitation si une clé fuit.
 - Pour une sécurité accrue, envisagez RS256 (clé privée/publique) afin de
-	séparer signature et vérification.
+ séparer signature et vérification.
 
 Générer une clé sécurisée (exemples)
 
@@ -141,4 +161,3 @@ JWT_SECRET="<valeur_générée>"
 JWT_ALGORITHM=HS256
 JWT_EXPIRATION=60
 ```
-
