@@ -23,6 +23,14 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
+      - name: Compute VERSION
+        run: |
+          set -e
+          VERSION=$(git describe --tags --always --dirty 2>/dev/null || echo dev)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "$VERSION" > VERSION
+        # make the file available to later steps/artifacts if needed
+
       - name: Cache pip
         uses: actions/cache@v4
         with:
