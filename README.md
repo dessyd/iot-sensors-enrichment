@@ -99,3 +99,46 @@ Exemples
 ```csv
 device123,Boiler,BoilerRoom,ModelX,{"firmware":"1.2","capabilities":["temp","pressure"]}
 ```
+
+
+## Sécurité des tokens (JWT_SECRET)
+
+La variable d'environnement `JWT_SECRET` est la clé utilisée pour signer
+et vérifier les JSON Web Tokens (JWT) émis par l'application. Elle
+garantit l'intégrité et l'authenticité des tokens : si un attaquant connaît
+cette clé, il peut forger des tokens valides (se faire passer pour
+n'importe quel utilisateur, y compris `admin`).
+
+Bonnes pratiques
+
+- Générer une clé forte (ex : 32 octets aléatoires encodés en base64).
+- Ne pas committer `JWT_SECRET` dans le dépôt. Utiliser `.env` (ignoré par
+	git) pour le développement, et un gestionnaire de secrets en production
+	(AWS Secrets Manager, HashiCorp Vault, etc.).
+- Garder une durée d'expiration courte via `JWT_EXPIRATION` pour limiter la
+	fenêtre d'exploitation si une clé fuit.
+- Pour une sécurité accrue, envisagez RS256 (clé privée/publique) afin de
+	séparer signature et vérification.
+
+Générer une clé sécurisée (exemples)
+
+```bash
+# openssl (32 bytes base64)
+openssl rand -base64 32
+
+# python (venv)
+.venv/bin/python - <<'PY'
+import secrets, base64
+print(base64.urlsafe_b64encode(secrets.token_bytes(32)).decode())
+PY
+```
+
+Ajout dans `.env`
+
+```text
+# ne pas committer ce fichier
+JWT_SECRET="<valeur_générée>"
+JWT_ALGORITHM=HS256
+JWT_EXPIRATION=60
+```
+
