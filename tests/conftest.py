@@ -40,6 +40,7 @@ def client(engine, session, monkeypatch):
     def get_session_override():
         with Session(engine) as s:
             yield s
+
     # Use FastAPI's dependency_overrides so the router dependencies call
     # our in-memory session provider (monkeypatching the module name is
     # insufficient because FastAPI captures the callable at import time).
